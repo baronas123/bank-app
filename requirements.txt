@@ -1,1 +1,10 @@
-streamlit
+fastapi
+uvicorn
+sqlalchemy
+passlib[bcrypt]
+python-dotenv
+python-multipart
+pydantic
+pytest
+httpx
+ocpp==0.7.2
