@@ -8,3 +8,4 @@ pydantic
 pytest
 httpx
 ocpp==0.7.2
+jinja2

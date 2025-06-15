@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Hello, {{ user.username }}!</h2>
+<p>Balance: {{ user.balance }} EUR</p>
+<form method="post" action="/topup" class="mb-3">
+  <div class="input-group">
+    <input type="number" step="0.01" class="form-control" name="amount" placeholder="Top up amount" required>
+    <button class="btn btn-secondary" type="submit">Top up</button>
+  </div>
+</form>
+<a href="/session/start" class="btn btn-success me-2">Start Session</a>
+<a href="/logout" class="btn btn-danger">Logout</a>
+{% endblock %}

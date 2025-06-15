@@ -1,11 +1,17 @@
 from fastapi.testclient import TestClient
+import os
+
+TEST_DB = "test.db"
+if os.path.exists(TEST_DB):
+    os.remove(TEST_DB)
+os.environ["DATABASE_URL"] = f"sqlite:///./{TEST_DB}"
 from app.main import app
 
 client = TestClient(app)
 
 
 def signup_user(username: str, password: str):
-    return client.post("/signup", data={"username": username, "password": password})
+    return client.post("/api/signup", data={"username": username, "password": password})
 
 
 def login_user(username: str, password: str):
@@ -26,11 +32,11 @@ def test_topup_and_session():
     login = login_user("bob", "pwd")
     token = login.json()["access_token"]
     headers = {"Authorization": f"Bearer {token}"}
-    topup = client.post("/topup", params={"amount": 5}, headers=headers)
+    topup = client.post("/api/topup", params={"amount": 5}, headers=headers)
     assert topup.status_code == 200
-    session_start = client.post("/session/start", headers=headers)
+    session_start = client.post("/api/session/start", headers=headers)
     assert session_start.status_code == 200
     session_id = session_start.json()["session_id"]
-    stop = client.post("/session/stop", params={"session_id": session_id, "energy": 1}, headers=headers)
+    stop = client.post("/api/session/stop", params={"session_id": session_id, "energy": 1}, headers=headers)
     assert stop.status_code == 200
     assert stop.json()["remaining_balance"] < 5

@@ -2,6 +2,8 @@
 
 This project provides a simplified prepaid EV charging backend using FastAPI and OCPP 1.6 libraries. It demonstrates user registration, login, balance top-up and charging session tracking. Secrets and database configuration are provided through environment variables.
 
+The web application includes basic HTML pages optimised for mobile using Bootstrap. An admin panel is provided to list users and sessions. A minimal OCPP 1.6 central system example is included in `app/ocpp_server.py`.
+
 ## Setup
 
 1. Install dependencies
@@ -12,10 +14,22 @@ pip install -r requirements.txt
 
 2. Copy `.env.example` to `.env` and adjust values for your environment.
 
-3. Run the server
+3. Choose environment configuration:
+   - `.env.dev` for development (default SQLite database)
+   - `.env.test` for testing
+   - `.env.prod` for production
+   Copy the appropriate file to `.env` before starting the app.
+
+4. Run the server
 
 ```bash
 uvicorn app.main:app --reload
+```
+
+To run the OCPP central system used for charge point communication:
+
+```bash
+python app/ocpp_server.py
 ```
 
 ## Running tests
@@ -28,9 +42,9 @@ pytest
 
 ```mermaid
 graph TD
-    User--HTTP-->App((FastAPI))
-    App--DB-->Database[(SQLite/MySQL)]
-    App--WebSocket-->CentralSystem((OCPP 1.6))
+    User--HTTP-->WebApp((FastAPI + Templates))
+    WebApp--DB-->Database[(SQLite/MySQL)]
+    WebApp--WebSocket-->CentralSystem((OCPP 1.6))
     CentralSystem--WebSocket-->ChargePoint
 ```
 
